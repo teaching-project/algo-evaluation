@@ -12,20 +12,37 @@
  * 
  * L'implémentation déjà faite est bien sûr fausse mais définit un format de réponse qui est correct. Il s'agira bien de renvoyer un tableau de tableau, c'est à
  * dire un tableau qui contiendra de petits tableaux qui sont les paires ligne-colonne.
- * 
+ *
  */
- export function mouvementsFou(ligne, colonne) {
-    return [
-        [ligne - 1, colonne - 1],
-        [ligne, colonne],
-        [ligne + 1, colonne + 1],
-    ]
+export function mouvementsFou(ligne, colonne) {
+    let positions = []
+    let offset = 1
+    while (ligne + offset <= 8 && colonne + offset <= 8) {
+        positions.push([ligne + offset, colonne + offset])
+        ++offset
+    }
+    offset = 1
+    while (ligne + offset <= 8 && colonne - offset > 0) {
+        positions.push([ligne + offset, colonne - offset])
+        ++offset
+    }
+    offset = 1
+    while (ligne - offset > 0 && colonne + offset <= 8) {
+        positions.push([ligne - offset, colonne + offset])
+        ++offset
+    }
+    offset = 1
+    while (ligne - offset > 0 && colonne - offset > 0) {
+        positions.push([ligne - offset, colonne - offset])
+        ++offset
+    }
+    return positions
 }
 
 /**
  * Ce log ne fait pas partie de l'exercice, ne vous en préoccupez donc pas, mais il vous aidera à afficher vos tests avec un joli formattage.
  */
- console.log(`Les movements d'un fou sont : ${mouvementsFou(4, 4).map(cell => `[${cell}]`)}`)
+console.log(`Les movements d'un fou sont : ${mouvementsFou(4, 4).map(cell => `[${cell}]`)}`)
 
 
 
@@ -49,7 +66,20 @@
  * 
  */
 export function pyramide(hauteur) {
-    return ["    *    ", "   ***   ", "  *****  ", " ******* ", "*********"]
+    let pyramide = []
+    for (let i = 0; i < hauteur; ++i) {
+        let padding = ""
+        for (let j = 0; j < Math.floor(hauteur - i - 1); ++j) {
+            padding += " "
+        }
+
+        pyramide[i] = padding
+        for (let j = 0; j < (i * 2) + 1; ++j) {
+            pyramide[i] += "*"
+        }
+        pyramide[i] += padding
+    }
+    return pyramide
 }
 
 pyramide(5).forEach(e => console.log(`${e}`))
